@@ -1,119 +1,131 @@
-import com.github.chen0040.fpm.AssocRuleMiner;
-import com.github.chen0040.fpm.apriori.Apriori;
 import com.github.chen0040.fpm.data.ItemSet;
-import com.github.chen0040.fpm.data.ItemSets;
-import com.github.chen0040.fpm.data.MetaData;
+import domain.Arguments;
+import domain.Constants;
+import miners.Miner;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import parsers.CLIParser;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
-    private static String INPUT_FILES_PATH_PREFIX = "src/main/";
-    private static String OUTPUT_FILES_PATH_PREFIX = "src/main/output/";
-    private static String INPUT_FILE = INPUT_FILES_PATH_PREFIX + "transactions.txt";
-    private static String OUTPUT_FILE_TYPE_POSTFIX = ".txt";
-    private static String DATE_PATTERN = "HH-mm-ss_dd-MM-yyyy";
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
 
+    public static void main(String[] args) {
+        CLIParser parser = new CLIParser();
+        Arguments arguments = null;
 
-    public static void main(String[] args) throws IOException {
-
-        /*FileWriter fileWriter = new FileWriter("src/main/transactions.txt");
-
-        Map<String, TreeSet<String>> map = new HashMap<String, TreeSet<String>>();
-
-        Scanner scanner = new Scanner(fileReader);
-        int i = 0;
-
-        while (scanner.hasNextLine() *//*&& i < 100*//*) {
-            String line = scanner.nextLine();
-            String[] split = line.split(";");
-
-            String key = split[0];
-            String value = split[1];
-
-            TreeSet<String> set;
-
-            set = map.get(key);
-
-            if (set == null) {
-                set = new TreeSet<>();
-            }
-
-            set.add(value);
-
-            map.put(key, set);
-
-
-            i++;
+        try {
+            arguments = parser.parse(args);
+        } catch (ParseException parseException) {
+            stopExecution("Not all required options are presented!!!", null);
         }
 
-        for (String key : map.keySet()) {
-            String join = String.join(",", map.get(key));
-            System.out.println(join);
-            fileWriter.write(join + "\n");
+        printStepSeparator();
+
+        printLine("Reading " + Objects.requireNonNull(arguments).getFileName() + "...");
+
+        List<String> lines = readFile(arguments.getFileName());
+
+        printLine("Reading file success!");
+
+        printStepSeparator();
+
+        List<List<String>> database = splitLines(lines);
+
+        Miner miner = Miner.newBuilder()
+                .setAlgorithm(arguments.getAlgorithm())
+                .setDatabase(database)
+                .setMinSupportLevel(arguments.getMinSupportLevel())
+                .setMinSetSize(arguments.getMinSetSize())
+                .build();
+
+        printLine(miner.getMinerName() + " pattern mining...");
+
+        List<ItemSet> miningResult = miner.mine();
+
+        printLine("Pattern mining success!");
+
+        printStepSeparator();
+
+        String newFileContent = getNewFileContent(miningResult);
+
+        printLine("Writing to file...");
+
+        writeToFile(newFileContent);
+
+        printLine("Writing to file success!");
+
+        printLine("");
+        printLine("Done.");
+
+    }
+
+    private static List<List<String>> splitLines(List<String> lines) {
+        return lines.stream().map(line -> Arrays.asList(line.split(" "))).collect(Collectors.toList());
+    }
+
+    private static void writeToFile(String content) {
+        String outputFileName = generateFileName();
+        File newFile = new File(Constants.OUTPUT_DIRECTORY + outputFileName);
+
+        try {
+            FileUtils.write(newFile, content, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            stopExecution("Writing to file error!!!", e);
         }
+    }
 
-        fileReader.close();
-        fileWriter.close();*/
-
-        FileReader fileReader = new FileReader(INPUT_FILE);
-        Scanner sc = new Scanner(fileReader);
-
-
-        List<List<String>> database = new ArrayList<>();
-
-        int i = 0;
-
-        while (sc.hasNextLine() && i < 1000) {
-            String[] split = sc.nextLine().split(",");
-            database.add(Arrays.asList(split));
-            i++;
-        }
-
-        File file = new File(OUTPUT_FILES_PATH_PREFIX + generateFileName());
-
-        // if file does not exists, then create it
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-
-        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
-
-        AssocRuleMiner method = new Apriori();
-        method.setMinSupportLevel(5);
-
-        MetaData metaData = new MetaData(database);
-
-        ItemSets frequentItemSets = method.minePatterns(database, metaData.getUniqueItems());
-        List<ItemSet> sets = frequentItemSets.getSets();
+    private static String getNewFileContent(List<ItemSet> sets) {
+        StringBuilder stringBuilder = new StringBuilder();
 
         for (ItemSet set : sets) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("{");
-            List<String> items = set.getItems();
-            for (int index = 0; index < items.size(); index++) {
-                stringBuilder.append(items.get(index));
-                if (index != items.size() - 1) {
-                    stringBuilder.append(", ");
-                }
-            }
-            stringBuilder.append("}");
-
-            fileWriter.write(stringBuilder.toString() + "\n");
+            String join = StringUtils.join(set.getItems(), " ") + "\n";
+            stringBuilder.append(join);
         }
 
-        fileReader.close();
-        fileWriter.close();
+        return stringBuilder.toString();
+    }
 
-        System.out.println(generateFileName());
+    private static void printStepSeparator() {
+        System.out.println("------------------------------------------------------------");
+    }
+
+    private static List<String> readFile(String fileName) {
+        File file = new File(fileName);
+
+        List<String> lines = new LinkedList<>();
+
+        try {
+            lines = FileUtils.readLines(file, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            stopExecution("Reading file error!!!", e);
+        }
+
+        return lines;
+    }
+
+    private static void stopExecution(String msg, Exception e) {
+        printLine(msg);
+
+        if (e != null)
+            e.printStackTrace();
+
+        System.exit(1);
+    }
+
+    private static void printLine(String msg) {
+        if (msg == null) {
+            return;
+        }
+        System.out.println("- " + msg);
     }
 
     private static String generateFileName() {
-        return simpleDateFormat.format(new Date()).toString() + OUTPUT_FILE_TYPE_POSTFIX;
+        return Constants.simpleDateFormat.format(new Date()) + Constants.OUTPUT_FILE_FORMAT_POSTFIX;
     }
 }
