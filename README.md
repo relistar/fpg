@@ -1,4 +1,4 @@
- - CLI interface for Apriori(FPG) association rule mining algorithm - 
+CLI interface for Apriori(FPG) association rule mining algorithm - 
 
 - Dataset -
 
