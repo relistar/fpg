@@ -9,8 +9,11 @@ Transaction elements are separated by a white space. An example in the root of t
 ### - Posix parameters -
 
 -f,--file <arg>        File name.             (default - none, required - true)
+
 -a,--algorithm <arg>   Algorithm name.        (default - "FPG", required - false)
+
 -ms,--support <arg>    Min mining support.    (default - 2, required - false)
+
 -ss,--set-size <arg>   Min result set size.   (default - 1, required - false)
 
 ### - Usage -
