@@ -24,6 +24,7 @@ public class OptionsConfigurator {
         minResultSetSizeOption.setType(Integer.TYPE);
 
         options.addOption(fileNameOption);
+        options.addOption(algorithmOption);
         options.addOption(minSupportOption);
         options.addOption(minResultSetSizeOption);
 
