@@ -12,6 +12,7 @@ public class OptionsConfigurator {
         Option algorithmOption = new Option(Constants.SHORT_OPT_ALGORITHM, Constants.LONG_OPT_ALGORITHM, true, Constants.OPT_DESC_ALGORITHM);
         Option minSupportOption = new Option(Constants.SHORT_OPT_SUPPORT, Constants.LONG_OPT_SUPPORT, true, Constants.OPT_DESC_SUPPORT);
         Option minResultSetSizeOption = new Option(Constants.SHORT_OPT_SET_SIZE, Constants.LONG_OPT_SET_SIZE, true, Constants.OPT_DESC_SET_SIZE);
+        Option maxTransactionSize = new Option(Constants.SHORT_OPT_MAX_TR_SIZE, Constants.LONG_OPT_MAX_TR_SIZE, true, Constants.OPT_DESC_MAX_TR_SIZE);
 
         fileNameOption.setRequired(true);
 
@@ -23,10 +24,14 @@ public class OptionsConfigurator {
         minResultSetSizeOption.setRequired(false);
         minResultSetSizeOption.setType(Integer.TYPE);
 
+        maxTransactionSize.setRequired(false);
+        maxTransactionSize.setType(Integer.TYPE);
+
         options.addOption(fileNameOption);
         options.addOption(algorithmOption);
         options.addOption(minSupportOption);
         options.addOption(minResultSetSizeOption);
+        options.addOption(maxTransactionSize);
 
         return options;
     }

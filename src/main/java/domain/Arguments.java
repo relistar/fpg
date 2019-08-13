@@ -5,6 +5,7 @@ public class Arguments {
     private String algorithm = Constants.DEFAULT_VALUE_ALGORITHM;
     private int minSupportLevel = Constants.DEFAULT_VALUE_MIN_SUPPORT;
     private int minSetSize = Constants.DEFAULT_VALUE_MIN_RESULT_SET_SIZE;
+    private int maxTransactionSize = Constants.DEFAULT_VALUE_MAX_TRANSACTION_SIZE;
 
     public String getFileName() {
         return this.fileName;
@@ -36,5 +37,13 @@ public class Arguments {
 
     public void setMinSetSize(int minSetSize) {
         this.minSetSize = minSetSize;
+    }
+
+    public int getMaxTransactionSize() {
+        return maxTransactionSize;
+    }
+
+    public void setMaxTransactionSize(int maxTransactionSize) {
+        this.maxTransactionSize = maxTransactionSize;
     }
 }

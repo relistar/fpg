@@ -37,9 +37,11 @@ public class Main {
 
         List<List<String>> database = splitLines(lines);
 
+        List<List<String>> filteredDatabase = filterDb(database, arguments.getMaxTransactionSize());
+
         Miner miner = Miner.newBuilder()
                 .setAlgorithm(arguments.getAlgorithm())
-                .setDatabase(database)
+                .setDatabase(filteredDatabase)
                 .setMinSupportLevel(arguments.getMinSupportLevel())
                 .setMinSetSize(arguments.getMinSetSize())
                 .build();
@@ -63,6 +65,10 @@ public class Main {
         printLine("");
         printLine("Done.");
 
+    }
+
+    private static List<List<String>> filterDb(List<List<String>> database, int maxTransactionSize) {
+        return database.stream().filter(row -> row.size() < maxTransactionSize).collect(Collectors.toList());
     }
 
     private static List<List<String>> splitLines(List<String> lines) {

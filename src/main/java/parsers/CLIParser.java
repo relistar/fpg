@@ -42,6 +42,10 @@ public class CLIParser {
             arguments.setMinSetSize(Integer.parseInt(commandLine.getOptionValue(Constants.SHORT_OPT_SET_SIZE)));
         }
 
+        if (commandLine.hasOption(Constants.SHORT_OPT_MAX_TR_SIZE)) {
+            arguments.setMaxTransactionSize(Integer.parseInt(commandLine.getOptionValue(Constants.SHORT_OPT_MAX_TR_SIZE)));
+        }
+
         return arguments;
     }
 }
