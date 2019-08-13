@@ -16,13 +16,15 @@ Transaction elements are separated by a white space. An example in the root of t
 
 -ss,--set-size <arg>   Min result set size.   (default - 1, required - false)
 
+-mt,--max-tr-size <arg>   Max transaction size. (default - 0x7fffffff, required - false)
+
 ### - Usage -
 
-`java -jar pm [-a <arg>] -f <arg> [-ms <arg>] [-ss <arg>]`
+`java -jar pm [-a <arg>] -f <arg> [-ms <arg>] [-mt <arg>] [-ss <arg>]`
 
 ### - Usage example -
 
-`java -jar pm -f filename.txt -a apriori -ms 3 -ss 2`
+`java -jar pm -f filename.txt -a apriori -ms 3 -ss 2 -mt 20`
 
 ### - Algorithm output result -
 
