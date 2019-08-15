@@ -16,7 +16,12 @@ public class CLIParser {
         try {
             commandLine = parser.parse(options, args);
         } catch (ParseException parseException) {
-            new HelpFormatter().printHelp("java -jar pm", "Options:", options, "\n" + parseException.getMessage(), true);
+            new HelpFormatter().printHelp(
+                    Constants.HELP_FORMATTER_CMD_SYNTAX,
+                    Constants.HELP_FORMATTER_HEADER, options,
+                    Constants.SYMBOL_NEW_LINE + parseException.getMessage(),
+                    true
+            );
             throw parseException;
         }
 
