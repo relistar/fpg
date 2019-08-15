@@ -29,4 +29,4 @@ Transaction elements are separated by a white space. An example in the root of t
 ### - Algorithm output result -
 
 The results of the algorithm are saved in the "OUTPUT" folder next to the file.
-The name of the new file will correspond to the current date and time.
+The name of the new new result folder will correspond to the current date and time.
