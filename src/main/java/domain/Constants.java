@@ -54,7 +54,7 @@ public class Constants {
     public static final String OUTPUT_FILE_SET = "sets" + OUTPUT_FILE_FORMAT;
     public static final String OUTPUT_FILE_MAP = "map" + OUTPUT_FILE_FORMAT;
     static final String DEFAULT_VALUE_FILE_NAME = "transactions" + OUTPUT_FILE_FORMAT;
-    private static final String DATE_PATTERN = "yyyy.MM.dd-hh:mm:ss";
+    private static final String DATE_PATTERN = "yyyy.MM.dd_hh_mm_ss";
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN);
     private static final String ALGORITHM_FPG = "fpg";
     static final String DEFAULT_VALUE_ALGORITHM = ALGORITHM_FPG;
