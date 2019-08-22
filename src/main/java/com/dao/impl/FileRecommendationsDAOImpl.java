@@ -1,10 +1,9 @@
 package com.dao.impl;
 
-import com.converters.MiningResultConverter;
 import com.dao.RecommendationsDAO;
 import com.domain.Arguments;
 import com.domain.Constants;
-import com.github.chen0040.fpm.data.ItemSet;
+import com.products.MinerResultOutput;
 import com.utils.ExecutionUtils;
 import com.utils.Logger;
 import org.apache.commons.io.FileUtils;
@@ -40,7 +39,7 @@ public class FileRecommendationsDAOImpl implements RecommendationsDAO {
     }
 
     @Override
-    public void writeToFile(String fileName, String content) {
+    public void save(String fileName, String content) {
         if (outputFolderPath == null) {
             outputFolderPath = generateNewFolderPath();
         }
@@ -66,38 +65,11 @@ public class FileRecommendationsDAOImpl implements RecommendationsDAO {
     }
 
     @Override
-    public void saveRecommendations(Map<String, Set<String>> recommendations) {
-        Logger.log(Constants.MSG_KEY_WRITING_MAP_FILE_START);
+    public void save(MinerResultOutput output) {
+        Logger.log(output.getStartMessage());
 
-        writeToFile(Constants.OUTPUT_FILE_MAP, MiningResultConverter.convertRecommendations(recommendations));
+        save(output.getFileName(), output.getContent());
 
-        Logger.log(Constants.MSG_KEY_WRITING_MAP_FILE_SUCCESS);
-    }
-
-    @Override
-    public void saveItemSets(List<ItemSet> itemSets) {
-        Logger.log(Constants.MSG_KEY_WRITING_SET_FILE_START);
-
-        writeToFile(Constants.OUTPUT_FILE_SET, MiningResultConverter.convertItemSets(itemSets));
-
-        Logger.log(Constants.MSG_KEY_WRITING_SET_FILE_SUCCESS);
-    }
-
-    @Override
-    public void saveExcludedItemSets(List<ItemSet> itemSets) {
-        Logger.log(Constants.MSG_KEY_WRITING_EXCLUDED_SET_FILE_START);
-
-        writeToFile(Constants.OUTPUT_FILE_EXCLUDED_SETS, MiningResultConverter.convertItemSets(itemSets));
-
-        Logger.log(Constants.MSG_KEY_WRITING_EXCLUDED_SET_FILE_SUCCESS);
-    }
-
-    @Override
-    public void saveExcludedTransactions(List<List<String>> transactions) {
-        Logger.log(Constants.MSG_KEY_WRITING_EXCLUDED_TRANSACTIONS_FILE_START);
-
-        writeToFile(Constants.OUTPUT_FILE_EXCLUDED_TRANSACTIONS, MiningResultConverter.convertTransactions(transactions));
-
-        Logger.log(Constants.MSG_KEY_WRITING_EXCLUDED_TRANSACTIONS_FILE_SUCCESS);
+        Logger.log(output.getSuccessMessage());
     }
 }

@@ -1,6 +1,6 @@
 package com.main;
 
-import com.executors.BasicRunner;
+import com.executors.impl.BasicRunner;
 
 
 public class Main {
