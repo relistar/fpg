@@ -1,8 +1,8 @@
-package parsers;
+package com.parsers;
 
-import configurators.OptionsConfigurator;
-import domain.Arguments;
-import domain.Constants;
+import com.configurators.OptionsConfigurator;
+import com.domain.Arguments;
+import com.domain.Constants;
 import org.apache.commons.cli.*;
 
 public class CLIParser {

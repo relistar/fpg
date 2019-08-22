@@ -1,4 +1,4 @@
-package domain;
+package com.domain;
 
 public class Arguments {
     private String fileName = Constants.DEFAULT_VALUE_FILE_NAME;

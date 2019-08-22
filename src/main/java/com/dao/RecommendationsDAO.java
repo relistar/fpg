@@ -1,7 +1,7 @@
-package dao;
+package com.dao;
 
+import com.domain.Arguments;
 import com.github.chen0040.fpm.data.ItemSet;
-import domain.Arguments;
 
 import java.util.List;
 import java.util.Map;
@@ -13,4 +13,10 @@ public interface RecommendationsDAO {
     void saveRecommendations(Map<String, Set<String>> recommendations);
 
     void saveItemSets(List<ItemSet> itemSets);
+
+    void saveExcludedItemSets(List<ItemSet> itemSets);
+
+    void writeToFile(String fileName, String content);
+
+    void saveExcludedTransactions(List<List<String>> transactions);
 }

@@ -1,24 +1,27 @@
-package miners;
+package com.miners;
 
+import com.domain.Constants;
+import com.factories.AssocRuleMinerFactory;
 import com.github.chen0040.fpm.AssocRuleMiner;
 import com.github.chen0040.fpm.data.ItemSet;
 import com.github.chen0040.fpm.data.ItemSets;
 import com.github.chen0040.fpm.data.MetaData;
-import domain.Constants;
-import factories.AssocRuleMinerFactory;
+import com.utils.Logger;
 import org.apache.commons.lang3.ObjectUtils;
-import utils.Logger;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Miner {
+
     private AssocRuleMiner assocRuleMiner;
     private List<List<String>> transactions;
+    private List<List<String>> excludedTransactions;
     private int minSetSize;
+    private int maxTransactionSize;
     private int minSupportLevel;
     private String algorithm;
     private List<ItemSet> itemSets;
+    private List<ItemSet> excludedItemSets;
     private Map<String, Set<String>> recommendations;
 
     private Miner() {
@@ -36,6 +39,26 @@ public class Miner {
         this.itemSets = itemSets;
     }
 
+    public List<ItemSet> getExcludedItemSets() {
+        return excludedItemSets;
+    }
+
+    private void setExcludedItemSets(List<ItemSet> excludedItemSets) {
+        this.excludedItemSets = excludedItemSets;
+    }
+
+    private void setTransactions(List<List<String>> transactions) {
+        this.transactions = transactions;
+    }
+
+    public List<List<String>> getExcludedTransactions() {
+        return excludedTransactions;
+    }
+
+    private void setExcludedTransactions(List<List<String>> excludedTransactions) {
+        this.excludedTransactions = excludedTransactions;
+    }
+
     public Map<String, Set<String>> getRecommendations() {
         return recommendations;
     }
@@ -43,11 +66,12 @@ public class Miner {
     public void mine() {
         Logger.log(getMinerName(), Constants.SYMBOL_WHITESPACE, Constants.MSG_KEY_PATTERN_MINING_START_POSTFIX);
 
+        filterTransactions();
+
         List<String> uniqueItems = new MetaData(transactions).getUniqueItems();
         ItemSets frequentItemSets = assocRuleMiner.minePatterns(transactions, uniqueItems);
-        List<ItemSet> itemSets = filterSets(frequentItemSets);
 
-        setItemSets(itemSets);
+        filterSets(frequentItemSets);
         extractRecommendations();
 
         Logger.log(Constants.MSG_KEY_PATTERN_MINING_SUCCESS);
@@ -74,8 +98,36 @@ public class Miner {
         this.recommendations = recommendations;
     }
 
-    private List<ItemSet> filterSets(ItemSets sets) {
-        return sets.stream().filter(set -> set.getItems().size() >= this.minSetSize).collect(Collectors.toList());
+    private void filterSets(ItemSets sets) {
+        List<ItemSet> itemSets = new ArrayList<>();
+        List<ItemSet> excluded = new ArrayList<>();
+
+        sets.stream().forEach(set -> {
+            if (set.getItems().size() >= this.minSetSize) {
+                itemSets.add(set);
+            } else {
+                excluded.add(set);
+            }
+        });
+
+        setItemSets(itemSets);
+        setExcludedItemSets(excluded);
+    }
+
+    private void filterTransactions() {
+        List<List<String>> transactions = new ArrayList<>();
+        List<List<String>> excluded = new ArrayList<>();
+
+        this.transactions.forEach(row -> {
+            if (row.size() < this.maxTransactionSize) {
+                transactions.add(row);
+            } else {
+                excluded.add(row);
+            }
+        });
+
+        setTransactions(transactions);
+        setExcludedTransactions(excluded);
     }
 
     public static Builder newBuilder() {
@@ -100,6 +152,12 @@ public class Miner {
 
         public Builder setMinSetSize(int minSetSize) {
             Miner.this.minSetSize = minSetSize;
+
+            return this;
+        }
+
+        public Builder setMaxTransactionSize(int maxTransactionSize) {
+            Miner.this.maxTransactionSize = maxTransactionSize;
 
             return this;
         }

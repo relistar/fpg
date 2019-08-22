@@ -1,4 +1,4 @@
-package utils;
+package com.utils;
 
 public class ExecutionUtils {
     public static void stopExecution(String msg, Exception e) {

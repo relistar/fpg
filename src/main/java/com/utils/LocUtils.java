@@ -1,6 +1,6 @@
-package utils;
+package com.utils;
 
-import domain.Constants;
+import com.domain.Constants;
 
 import java.util.Locale;
 import java.util.MissingResourceException;

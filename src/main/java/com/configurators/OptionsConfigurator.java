@@ -1,6 +1,6 @@
-package configurators;
+package com.configurators;
 
-import domain.Constants;
+import com.domain.Constants;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 

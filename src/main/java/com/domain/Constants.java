@@ -1,4 +1,4 @@
-package domain;
+package com.domain;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -40,6 +40,10 @@ public class Constants {
     public static final String OPT_DESC_MAX_TR_SIZE = "Max transaction size.";
     public static final String MSG_KEY_READING_FILE_START_PREFIX = "msg.reading.file.start.prefix";
     public static final String MSG_KEY_READING_FILE_SUCCESS = "msg.reading.file.success";
+    public static final String MSG_KEY_WRITING_EXCLUDED_SET_FILE_START = "msg.writing.excluded.set.file.start";
+    public static final String MSG_KEY_WRITING_EXCLUDED_SET_FILE_SUCCESS = "msg.writing.excluded.set.file.success";
+    public static final String MSG_KEY_WRITING_EXCLUDED_TRANSACTIONS_FILE_START = "msg.writing.excluded.transactions.file.start";
+    public static final String MSG_KEY_WRITING_EXCLUDED_TRANSACTIONS_FILE_SUCCESS = "msg.writing.excluded.transactions.file.success";
     static final int DEFAULT_VALUE_MIN_SUPPORT = 2;
     static final int DEFAULT_VALUE_MIN_RESULT_SET_SIZE = 1;
     static final int DEFAULT_VALUE_MAX_TRANSACTION_SIZE = Integer.MAX_VALUE;
@@ -53,6 +57,8 @@ public class Constants {
     private static final String OUTPUT_FILE_FORMAT = ".txt";
     public static final String OUTPUT_FILE_SET = "sets" + OUTPUT_FILE_FORMAT;
     public static final String OUTPUT_FILE_MAP = "map" + OUTPUT_FILE_FORMAT;
+    public static final String OUTPUT_FILE_EXCLUDED_SETS = "excluded_sets" + OUTPUT_FILE_FORMAT;
+    public static final String OUTPUT_FILE_EXCLUDED_TRANSACTIONS = "excluded_transactions" + OUTPUT_FILE_FORMAT;
     static final String DEFAULT_VALUE_FILE_NAME = "transactions" + OUTPUT_FILE_FORMAT;
     private static final String DATE_PATTERN = "yyyy.MM.dd_hh_mm_ss";
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN);
