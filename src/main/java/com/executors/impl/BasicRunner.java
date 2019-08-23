@@ -32,28 +32,17 @@ public class BasicRunner implements Runner {
 
         MinerResultConverterFactory factory = new MinerResultConverterFactory();
 
-        MinerResultOutput excludedOutput = factory.create(ConverterType.EXCLUDED_TRANSACTIONS);
-
+        MinerResultOutput excludedOutput = factory.create(ConverterType.EXCLUDED_TRANSACTIONS, miner.getExcludedTransactions());
         excludedOutput.setData(miner.getExcludedTransactions());
-
         recommendationsDAO.save(excludedOutput);
 
-        MinerResultOutput itemSetsOutput = factory.create(ConverterType.ITEM_SETS);
-
-        itemSetsOutput.setData(miner.getItemSets());
-
+        MinerResultOutput itemSetsOutput = factory.create(ConverterType.ITEM_SETS, miner.getItemSets());
         recommendationsDAO.save(itemSetsOutput);
 
-        MinerResultOutput excludedItemSetsOutput = factory.create(ConverterType.EXCLUDED_ITEM_SETS);
-
-        excludedItemSetsOutput.setData(miner.getExcludedItemSets());
-
+        MinerResultOutput excludedItemSetsOutput = factory.create(ConverterType.EXCLUDED_ITEM_SETS, miner.getExcludedItemSets());
         recommendationsDAO.save(excludedItemSetsOutput);
 
-        MinerResultOutput recommendationsOutput = factory.create(ConverterType.RECOMMENDATIONS);
-
-        recommendationsOutput.setData(miner.getRecommendations());
-
+        MinerResultOutput recommendationsOutput = factory.create(ConverterType.RECOMMENDATIONS, miner.getRecommendations());
         recommendationsDAO.save(recommendationsOutput);
 
         Logger.log(Constants.MSG_KEY_DONE);

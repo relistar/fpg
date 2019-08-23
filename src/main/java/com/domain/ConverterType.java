@@ -10,31 +10,43 @@ public enum ConverterType {
 
     EXCLUDED_TRANSACTIONS {
         @Override
-        public MinerResultOutput getInstance() {
-            return new ExcludedTransactionsOutput();
+        public MinerResultOutput getInstance(Object object) {
+            MinerResultOutput output = new ExcludedTransactionsOutput();
+            output.setData(object);
+
+            return output;
         }
     },
 
     ITEM_SETS {
         @Override
-        public MinerResultOutput getInstance() {
-            return new ItemSetsOutput();
+        public MinerResultOutput getInstance(Object object) {
+            MinerResultOutput output = new ItemSetsOutput();
+            output.setData(object);
+
+            return output;
         }
     },
 
     EXCLUDED_ITEM_SETS {
         @Override
-        public MinerResultOutput getInstance() {
-            return new ExcludedItemSetsOutput();
+        public MinerResultOutput getInstance(Object object) {
+            MinerResultOutput output = new ExcludedItemSetsOutput();
+            output.setData(object);
+
+            return output;
         }
     },
 
     RECOMMENDATIONS {
         @Override
-        public MinerResultOutput getInstance() {
-            return new RecommendationsOutput();
+        public MinerResultOutput getInstance(Object object) {
+            MinerResultOutput output = new RecommendationsOutput();
+            output.setData(object);
+
+            return output;
         }
     };
 
-    public abstract MinerResultOutput getInstance();
+    public abstract MinerResultOutput getInstance(Object object);
 }
