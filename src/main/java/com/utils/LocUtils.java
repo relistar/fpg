@@ -13,15 +13,11 @@ class LocUtils {
         StringBuilder output = new StringBuilder();
 
         for (String msg : messages) {
-            String toAppend;
-
             try {
-                toAppend = resourceBundle.getString(msg);
+                output.append(resourceBundle.getString(msg));
             } catch (MissingResourceException e) {
-                toAppend = msg;
+                output.append(msg);
             }
-
-            output.append(toAppend);
         }
 
         return output.toString();
